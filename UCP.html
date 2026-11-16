@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Estudo completo de unidades, conversões e escala: SI, notação científica, regra de três, área, volume, tempo, velocidade e escala em mapas e plantas.">
+  <meta name="description" content="Estudo completo e divertido de unidades, conversões e escala: SI, notação científica, regra de três, área, volume, tempo, velocidade e escala em mapas e plantas.">
   <title>06 · Unidades, conversão e escala | Portal ENEM</title>
   <style>
     :root{
@@ -34,15 +34,26 @@
     a:focus-visible,
     button:focus-visible,
     input:focus-visible,
+    select:focus-visible,
     summary:focus-visible{
       outline:3px solid #7bc6a0;
       outline-offset:2px;
     }
 
+    /* Progress bar */
+    #progress{
+      position:fixed;
+      top:0;left:0;height:4px;
+      background:linear-gradient(90deg,#2e7d5b,#91d5b2);
+      width:0%;
+      z-index:100;
+      transition:width .15s linear;
+    }
+
     .top{
       background:var(--deep);
       color:#fff;
-      padding:16px max(22px,calc((100% - 1100px)/2));
+      padding:14px max(22px,calc((100% - 1100px)/2));
       display:flex;
       justify-content:space-between;
       align-items:center;
@@ -59,11 +70,11 @@
     .top span{color:#b8d1c7;font-size:13px}
 
     .wrap{
-      width:min(1100px,calc(100% - 44px));
+      width:min(980px,calc(100% - 36px));
       margin:0 auto;
     }
 
-    .hero{padding:52px 0 26px}
+    .hero{padding:48px 0 28px}
     .badge{
       display:inline-block;
       background:#dff2e7;
@@ -77,18 +88,20 @@
       text-transform:uppercase;
     }
     .hero h1{
-      font-size:clamp(2rem,5vw,3.4rem);
+      font-size:clamp(2rem,5vw,3.2rem);
       line-height:1.08;
-      margin:16px 0 14px;
+      margin:14px 0 12px;
       letter-spacing:-.04em;
       color:var(--green);
     }
-    .hero p{color:var(--muted);max-width:780px;font-size:18px;margin:0}
+    .hero p{color:var(--muted);max-width:720px;font-size:18px;margin:0}
 
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
 
     .btn{
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
       background:var(--green);
       color:#fff;
       text-decoration:none;
@@ -98,17 +111,63 @@
       font-weight:800;
       cursor:pointer;
       font:inherit;
+      transition:transform .15s, background .15s;
     }
+    .btn:hover{transform:translateY(-1px)}
     .btn.ghost{background:transparent;color:var(--green)}
     .btn.secondary{background:#fff;color:var(--green);border-color:var(--line)}
+    .btn.small{padding:8px 12px;font-size:14px}
 
-    section{margin:34px 0;scroll-margin-top:28px}
+    /* Sticky section nav */
+    .sec-nav{
+      position:sticky;
+      top:0;
+      z-index:40;
+      background:rgba(244,246,240,.92);
+      backdrop-filter:blur(8px);
+      border-bottom:1px solid var(--line);
+      padding:10px 0;
+      margin:0 -18px 8px;
+      overflow-x:auto;
+      white-space:nowrap;
+      scrollbar-width:none;
+    }
+    .sec-nav::-webkit-scrollbar{display:none}
+    .sec-nav-inner{
+      display:inline-flex;
+      gap:6px;
+      padding:0 18px;
+    }
+    .sec-nav a{
+      display:inline-block;
+      text-decoration:none;
+      color:#315c4b;
+      font-size:13px;
+      font-weight:700;
+      padding:7px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      transition:background .15s,color .15s,border-color .15s;
+    }
+    .sec-nav a:hover,
+    .sec-nav a.active{
+      background:#e5f6ec;
+      color:#123b33;
+      border-color:#b9ddc9;
+    }
+
+    section{margin:42px 0;scroll-margin-top:70px}
     h2{
-      font-size:1.65rem;
+      font-size:1.6rem;
       color:var(--green);
       letter-spacing:-.02em;
-      margin:0 0 12px;
+      margin:0 0 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
+    h2 .emoji{font-size:1.4rem}
     h3{color:var(--green);margin:22px 0 8px;font-size:1.15rem}
     h4{color:var(--green);margin:16px 0 6px;font-size:1rem;text-transform:uppercase;letter-spacing:.06em}
     p{margin:0 0 12px}
@@ -142,6 +201,13 @@
       border-left:4px solid var(--warn);
       padding:14px 16px;
       border-radius:10px;
+      margin:16px 0;
+    }
+    .fun{
+      background:linear-gradient(135deg,#e8f7ef,#f0f9f4);
+      border:1px solid #b9ddc9;
+      padding:16px 18px;
+      border-radius:14px;
       margin:16px 0;
     }
 
@@ -195,122 +261,51 @@
     }
     summary{cursor:pointer;font-weight:800;color:var(--green)}
 
-    /* ================= Layout com barra lateral ================= */
-    .layout{
-      display:grid;
-      grid-template-columns:260px minmax(0,1fr);
-      gap:32px;
-      align-items:start;
-    }
-
-    .content{min-width:0}
-
-    /* O botão da gaveta e o backdrop só existem no mobile */
-    .sidebar-toggle,
-    .sidebar-backdrop{display:none}
-
-    .sidebar{
-      position:sticky;
-      top:20px;
-      max-height:calc(100vh - 40px);
-      overflow-y:auto;
+    /* Interactive converters */
+    .converter{
       background:#fff;
       border:1px solid var(--line);
       border-radius:16px;
-      padding:16px 14px;
-      box-shadow:0 6px 20px rgba(23,41,35,.04);
+      padding:18px;
+      margin:18px 0;
     }
-
-    .sidebar-head{
+    .converter h3{margin-top:0}
+    .conv-row{
       display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:10px;
-      color:var(--green);
-      font-size:13px;
-      letter-spacing:.04em;
-      text-transform:uppercase;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:flex-end;
+      margin-top:12px;
     }
-
-    .sidebar-close{display:none}
-
-    .sidebar-nav{display:flex;flex-direction:column;gap:2px}
-
-    .sidebar-nav a{
+    .conv-field{flex:1;min-width:120px}
+    .conv-field label{
       display:block;
-      text-decoration:none;
-      color:#315c4b;
-      font-size:14px;
-      font-weight:600;
-      padding:8px 10px;
-      border-radius:8px;
-      border-left:3px solid transparent;
-      transition:background .15s, border-color .15s, color .15s;
+      font-size:13px;
+      font-weight:700;
+      color:var(--muted);
+      margin-bottom:4px;
     }
-    .sidebar-nav a:hover{background:#f0f6f2}
-    .sidebar-nav a.active{
+    .conv-field input,
+    .conv-field select{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      font:inherit;
+      background:#fafcf9;
+    }
+    .conv-result{
+      margin-top:14px;
+      padding:12px 14px;
       background:#e5f6ec;
-      color:#123b33;
-      border-left-color:var(--success);
-      font-weight:800;
+      border-radius:10px;
+      font-weight:700;
+      color:#1d6042;
+      min-height:48px;
+      display:flex;
+      align-items:center;
     }
-
-    /* ================= Mobile: vira gaveta ================= */
-    @media (max-width:900px){
-      .layout{display:block}
-
-      .sidebar-toggle{
-        display:inline-flex;
-        align-items:center;
-        gap:8px;
-        background:var(--green);
-        color:#fff;
-        border:none;
-        padding:10px 14px;
-        border-radius:10px;
-        font:inherit;
-        font-weight:800;
-        cursor:pointer;
-        margin:0 0 16px;
-      }
-
-      .sidebar{
-        position:fixed;
-        top:0;
-        left:0;
-        height:100vh;
-        width:min(82vw,300px);
-        max-height:none;
-        border-radius:0 16px 16px 0;
-        transform:translateX(-100%);
-        transition:transform .25s ease;
-        z-index:50;
-        padding-top:18px;
-      }
-      .sidebar.open{transform:translateX(0)}
-
-      .sidebar-close{
-        display:inline-flex;
-        background:transparent;
-        border:none;
-        font-size:18px;
-        cursor:pointer;
-        color:var(--green);
-        padding:4px 8px;
-      }
-
-      .sidebar-backdrop{
-        display:block;
-        position:fixed;
-        inset:0;
-        background:rgba(15,48,42,.45);
-        z-index:40;
-        border:none;
-      }
-      .sidebar-backdrop[hidden]{display:none}
-
-      body.no-scroll{overflow:hidden}
-    }
+    .conv-result.empty{background:#f1f4f2;color:var(--muted);font-weight:500}
 
     /* Quiz */
     .question{
@@ -320,16 +315,17 @@
       border-radius:12px;
       padding:16px;
       margin:14px 0;
-      transition:border-color .2s;
+      transition:border-color .2s, transform .2s;
     }
     .question.ok{border-left-color:var(--success)}
     .question.bad{border-left-color:var(--danger)}
     .question p{font-weight:700;margin:0 0 8px}
     .question label{
       display:block;
-      padding:7px 9px;
+      padding:8px 10px;
       border-radius:8px;
       cursor:pointer;
+      transition:background .15s;
     }
     .question label:hover{background:#f0f6f2}
     .question input{margin-right:6px}
@@ -348,10 +344,11 @@
 
     .quiz-summary{
       margin:18px 0;
-      padding:14px 16px;
-      border-radius:10px;
+      padding:16px 18px;
+      border-radius:12px;
       background:#edf2ee;
       font-weight:800;
+      text-align:center;
     }
     .quiz-summary[hidden]{display:none}
     .quiz-summary.success{background:#e5f6ec;color:#1d6042}
@@ -360,624 +357,704 @@
 
     .quiz-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 
+    /* Confetti canvas */
+    #confetti{position:fixed;inset:0;pointer-events:none;z-index:200}
+
     footer{
       margin-top:54px;
       padding:28px 0 40px;
       border-top:1px solid var(--line);
       color:var(--muted);
       font-size:14px;
+      text-align:center;
     }
 
     @media (max-width:760px){
       .grid,.grid-3{grid-template-columns:1fr}
-      .hero{padding-top:34px}
-      .top{justify-content:flex-start}
+      .hero{padding-top:32px}
+      .conv-row{flex-direction:column}
     }
   </style>
 </head>
 <body>
+  <div id="progress"></div>
+  <canvas id="confetti"></canvas>
 
   <header class="top">
     <a href="#">PORTAL ENEM</a>
-    <span>Matemática</span>
+    <span>Matemática · Divertido & interativo</span>
   </header>
 
   <main class="wrap">
 
     <section class="hero">
       <div class="badge">06 · Unidades, conversão e escala</div>
-      <h1>Unidades, conversão e escala</h1>
+      <h1>Unidades, conversão e escala 🚀</h1>
       <p>
-        Estudo completo de comprimento, área, volume, massa, tempo, capacidade e
-        velocidade; notação científica; regra de três aplicada à conversão; e
-        escala em mapas e plantas com os três tipos de problema.
+        Aprenda de forma leve e prática: comprimento, área, volume, massa, tempo,
+        velocidade, notação científica, regra de três e escala em mapas. Tem
+        conversor interativo e quiz com feedback imediato!
       </p>
       <div class="actions">
         <a class="btn" href="#fundamentos">Começar a estudar</a>
-        <a class="btn ghost" href="#quiz">Ir para o quiz</a>
+        <a class="btn ghost" href="#conversores">Abrir conversores</a>
+        <a class="btn secondary" href="#quiz">Ir para o quiz</a>
       </div>
     </section>
 
-    <!-- ===================== LAYOUT: sidebar + conteúdo ===================== -->
-    <div class="layout">
+    <!-- Sticky section navigation -->
+    <nav class="sec-nav" aria-label="Navegação do capítulo">
+      <div class="sec-nav-inner">
+        <a href="#fundamentos">1. Fundamentos</a>
+        <a href="#si">2. SI</a>
+        <a href="#notacao">3. Notação</a>
+        <a href="#comprimento">4. Comprimento</a>
+        <a href="#area-volume">5. Área & Volume</a>
+        <a href="#massa">6. Massa</a>
+        <a href="#tempo">7. Tempo</a>
+        <a href="#velocidade">8. Velocidade</a>
+        <a href="#escala">9. Escala</a>
+        <a href="#conversores">10. Conversores</a>
+        <a href="#erros">11. Erros</a>
+        <a href="#exercicios">12. Exercícios</a>
+        <a href="#quiz">13. Quiz</a>
+      </div>
+    </nav>
 
-      <!-- Botão que abre a gaveta no mobile -->
-      <button class="sidebar-toggle" id="sidebarToggle" aria-controls="sidebar" aria-expanded="false" type="button">
-        <span aria-hidden="true">☰</span> Índice
-      </button>
+    <!-- ===================== CONTEÚDO ===================== -->
 
-      <!-- Fundo escuro que fecha a gaveta ao clicar -->
-      <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
-
-      <!-- Barra lateral -->
-      <aside class="sidebar" id="sidebar" aria-label="Índice do conteúdo">
-        <div class="sidebar-head">
-          <strong>Neste capítulo</strong>
-          <button class="sidebar-close" id="sidebarClose" aria-label="Fechar índice" type="button">✕</button>
+    <section id="fundamentos">
+      <h2><span class="emoji">🎯</span> 1. Fundamentos: grandeza, unidade e medida</h2>
+      <div class="card">
+        <p>
+          Uma <strong>grandeza</strong> é algo que pode ser medido (comprimento, massa, tempo…).
+          Uma <strong>unidade</strong> é o padrão usado para expressar essa medida.
+          Medir é comparar uma grandeza com a unidade escolhida.
+        </p>
+        <p>
+          Exemplo: dizer que uma mesa tem “1,2” não significa nada. Dizer
+          “1,2 <strong>m</strong>” significa que o comprimento da mesa é 1,2 vezes
+          o metro padrão.
+        </p>
+        <div class="fun">
+          <strong>💡 Ideia central:</strong> o número e a unidade formam um par
+          inseparável. Trocar a unidade sem ajustar o número muda o significado — 
+          e isso é o que mais cai no ENEM!
         </div>
-        <nav class="sidebar-nav">
-          <a href="#fundamentos" class="active">1. Fundamentos</a>
-          <a href="#si">2. Sistema Internacional</a>
-          <a href="#notacao">3. Notação científica</a>
-          <a href="#comprimento">4. Comprimento</a>
-          <a href="#area-volume">5. Área e volume</a>
-          <a href="#massa">6. Massa</a>
-          <a href="#tempo">7. Tempo</a>
-          <a href="#velocidade">8. Velocidade</a>
-          <a href="#escala">9. Escala</a>
-          <a href="#erros">10. Erros comuns</a>
-          <a href="#exercicios">11. Exercícios</a>
-          <a href="#quiz">12. Quiz</a>
-        </nav>
-      </aside>
+      </div>
+    </section>
 
-      <!-- Conteúdo principal -->
-      <div class="content">
+    <section id="si">
+      <h2><span class="emoji">🌍</span> 2. Sistema Internacional de Unidades (SI)</h2>
+      <div class="card">
+        <p>O SI define sete grandezas de base. As mais cobradas no ENEM são:</p>
+        <table>
+          <thead>
+            <tr><th>Grandeza</th><th>Unidade SI</th><th>Símbolo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Comprimento</td><td>metro</td><td>m</td></tr>
+            <tr><td>Massa</td><td>quilograma</td><td>kg</td></tr>
+            <tr><td>Tempo</td><td>segundo</td><td>s</td></tr>
+            <tr><td>Corrente elétrica</td><td>ampere</td><td>A</td></tr>
+            <tr><td>Temperatura</td><td>kelvin</td><td>K</td></tr>
+            <tr><td>Quantidade de matéria</td><td>mol</td><td>mol</td></tr>
+            <tr><td>Intensidade luminosa</td><td>candela</td><td>cd</td></tr>
+          </tbody>
+        </table>
 
-        <section id="fundamentos">
-          <h2>1. Fundamentos: grandeza, unidade e medida</h2>
-          <div class="card">
-            <p>
-              Uma <strong>grandeza</strong> é algo que pode ser medido (comprimento, massa, tempo…).
-              Uma <strong>unidade</strong> é o padrão usado para expressar essa medida.
-              Medir é comparar uma grandeza com a unidade escolhida.
-            </p>
-            <p>
-              Exemplo: dizer que uma mesa tem “1,2” não significa nada. Dizer
-              “1,2 <strong>m</strong>” significa que o comprimento da mesa é 1,2 vezes
-              o metro padrão.
-            </p>
-            <div class="note">
-              <strong>Ideia central:</strong> o número e a unidade formam um par
-              inseparável. Trocar a unidade sem ajustar o número muda o significado.
-            </div>
+        <h3>Prefixos do SI (a “escada mágica”)</h3>
+        <p>Os prefixos multiplicam ou dividem a unidade por potências de 10.</p>
+        <table>
+          <thead>
+            <tr><th>Prefixo</th><th>Símbolo</th><th>Fator</th><th>Exemplo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>quilo</td><td>k</td><td>10³</td><td>1 km = 1 000 m</td></tr>
+            <tr><td>hecto</td><td>h</td><td>10²</td><td>1 hm = 100 m</td></tr>
+            <tr><td>deca</td><td>da</td><td>10¹</td><td>1 dam = 10 m</td></tr>
+            <tr><td>—</td><td>—</td><td>10⁰</td><td>1 m</td></tr>
+            <tr><td>deci</td><td>d</td><td>10⁻¹</td><td>1 dm = 0,1 m</td></tr>
+            <tr><td>centi</td><td>c</td><td>10⁻²</td><td>1 cm = 0,01 m</td></tr>
+            <tr><td>mili</td><td>m</td><td>10⁻³</td><td>1 mm = 0,001 m</td></tr>
+            <tr><td>micro</td><td>µ</td><td>10⁻⁶</td><td>1 µm = 0,000001 m</td></tr>
+            <tr><td>nano</td><td>n</td><td>10⁻⁹</td><td>1 nm = 10⁻⁹ m</td></tr>
+          </tbody>
+        </table>
+        <div class="hint">
+          <strong>Regra de ouro:</strong> cada prefixo “vale” uma potência de 10.
+          Converter entre prefixos é apenas multiplicar por essas potências.
+        </div>
+      </div>
+    </section>
+
+    <section id="notacao">
+      <h2><span class="emoji">🔬</span> 3. Notação científica</h2>
+      <div class="card">
+        <p>
+          Notação científica escreve números como
+          <code>a × 10ⁿ</code>, com <code>1 ≤ a &lt; 10</code> e <code>n</code> inteiro.
+          É essencial para trabalhar com medidas muito grandes ou muito pequenas.
+        </p>
+        <div class="formula">a × 10ⁿ &nbsp;&nbsp; (1 ≤ a &lt; 10)</div>
+
+        <h4>Exemplos rápidos</h4>
+        <ul>
+          <li><code>3 500 = 3,5 × 10³</code></li>
+          <li><code>0,00042 = 4,2 × 10⁻⁴</code></li>
+          <li><code>150 000 000 km = 1,5 × 10⁸ km</code> (distância Terra–Sol)</li>
+          <li><code>0,000000001 m = 1 × 10⁻⁹ m</code> (1 nanômetro)</li>
+        </ul>
+
+        <div class="fun">
+          <strong>Por que isso importa?</strong> Ao converter unidades pequenas para grandes, 
+          os valores ficam minúsculos. Em vez de escrever muitos zeros, usamos potências de 10.
+          Exemplo: <code>5 mm = 5 × 10⁻³ m = 0,005 m</code>.
+        </div>
+      </div>
+    </section>
+
+    <section id="comprimento">
+      <h2><span class="emoji">📏</span> 4. Conversão de comprimento</h2>
+      <div class="card">
+        <p>
+          A unidade básica é o metro. A cada “salto” na escada, multiplica-se ou
+          divide-se por 10.
+        </p>
+
+        <table>
+          <thead>
+            <tr><th>km</th><th>hm</th><th>dam</th><th>m</th><th>dm</th><th>cm</th><th>mm</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1 000 m</td><td>100 m</td><td>10 m</td><td>1 m</td>
+              <td>0,1 m</td><td>0,01 m</td><td>0,001 m</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Método 1 — pela escada</h3>
+        <p>Conte os saltos e multiplique ou divida por 10 a cada salto.</p>
+        <p><strong>Exemplo:</strong> 3,7 km em cm → 5 saltos “para baixo” → × 10⁵</p>
+        <p class="math">3,7 × 10⁵ = 370 000 cm</p>
+
+        <h3>Método 2 — pela regra de três</h3>
+        <p>Quando a escada confunde, monte uma regra de três.</p>
+        <div class="formula">
+          1 km — 1 000 m<br>
+          4,2 km — x m<br>
+          x = 4,2 × 1 000 = 4 200 m
+        </div>
+      </div>
+    </section>
+
+    <section id="area-volume">
+      <h2><span class="emoji">📦</span> 5. Área e volume</h2>
+      <div class="card">
+        <h3>Área — por que eleva ao quadrado?</h3>
+        <p>
+          Área é o produto de duas medidas de comprimento. Se cada lado for
+          convertido, as duas conversões se multiplicam.
+        </p>
+        <div class="formula">1 m² = (100 cm)² = 10 000 cm²</div>
+
+        <table>
+          <thead>
+            <tr><th>Relação</th><th>Equivalência</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1 m²</td><td>10 000 cm²</td></tr>
+            <tr><td>1 km²</td><td>1 000 000 m²</td></tr>
+            <tr><td>1 hectare (ha)</td><td>10 000 m²</td></tr>
+            <tr><td>1 alqueire</td><td>varia por região (cuidado!)</td></tr>
+          </tbody>
+        </table>
+
+        <div class="warn">
+          <strong>Erro clássico:</strong> dizer que <code>1 m² = 100 cm²</code>.
+          O correto é <code>1 m² = 10 000 cm²</code> (o fator 100 aparece duas vezes).
+        </div>
+
+        <h3>Volume — por que eleva ao cubo?</h3>
+        <div class="formula">1 m³ = (100 cm)³ = 1 000 000 cm³</div>
+
+        <h3>Relação entre volume e capacidade</h3>
+        <table>
+          <thead>
+            <tr><th>Volume</th><th>Capacidade</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1 m³</td><td>1 000 L</td></tr>
+            <tr><td>1 dm³</td><td>1 L</td></tr>
+            <tr><td>1 cm³</td><td>1 mL</td></tr>
+            <tr><td>1 L</td><td>1 000 mL</td></tr>
+          </tbody>
+        </table>
+
+        <div class="note">
+          <strong>Truque:</strong> como <code>1 dm³ = 1 L</code> e
+          <code>1 cm³ = 1 mL</code>, converter entre volume e capacidade é
+          andar 3 casas com potências de 1 000.
+        </div>
+      </div>
+    </section>
+
+    <section id="massa">
+      <h2><span class="emoji">⚖️</span> 6. Massa</h2>
+      <div class="card">
+        <p>
+          A unidade SI é o quilograma (kg). A escada é decimal, como o comprimento,
+          mas a unidade base do dia a dia é o grama (g).
+        </p>
+        <ul>
+          <li><code>1 t = 1 000 kg</code></li>
+          <li><code>1 kg = 1 000 g</code></li>
+          <li><code>1 g = 1 000 mg</code></li>
+        </ul>
+
+        <h3>Massa × peso</h3>
+        <p>
+          <strong>Massa</strong> é a quantidade de matéria (não muda com o local).
+          <strong>Peso</strong> é a força gravitacional (muda com a gravidade).
+          No ENEM a unidade kg é sempre de massa.
+        </p>
+      </div>
+    </section>
+
+    <section id="tempo">
+      <h2><span class="emoji">⏱️</span> 7. Tempo</h2>
+      <div class="card">
+        <p>
+          O tempo <strong>não é decimal</strong>: usa base 60 para minutos e segundos.
+        </p>
+        <ul>
+          <li><code>1 min = 60 s</code></li>
+          <li><code>1 h = 60 min = 3 600 s</code></li>
+          <li><code>1 dia = 24 h = 1 440 min</code></li>
+        </ul>
+
+        <div class="warn">
+          <strong>Cuidado:</strong> <code>0,5 h</code> não são 50 min, são 30 min.
+          Para converter horas “quebradas” em minutos, multiplique a parte decimal por 60.
+        </div>
+
+        <h3>Exemplo</h3>
+        <p>Converter 2,75 h → 2 h + (0,75 × 60) = <strong>2 h 45 min</strong>.</p>
+      </div>
+    </section>
+
+    <section id="velocidade">
+      <h2><span class="emoji">🏎️</span> 8. Velocidade</h2>
+      <div class="card">
+        <p>Velocidade mede a rapidez com que o espaço varia no tempo:</p>
+        <div class="formula">v = Δs / Δt</div>
+        <p>A unidade SI é <code>m/s</code>. No dia a dia usamos <code>km/h</code>.</p>
+
+        <h3>Conversão km/h ↔ m/s</h3>
+        <div class="formula">1 m/s = 3,6 km/h</div>
+        <ul>
+          <li>De <strong>km/h</strong> para <strong>m/s</strong>: dividir por 3,6.</li>
+          <li>De <strong>m/s</strong> para <strong>km/h</strong>: multiplicar por 3,6.</li>
+        </ul>
+
+        <p class="math">108 km/h ÷ 3,6 = 30 m/s</p>
+        <p class="math">5 m/s × 3,6 = 18 km/h</p>
+      </div>
+    </section>
+
+    <section id="escala">
+      <h2><span class="emoji">🗺️</span> 9. Escala em mapas e plantas</h2>
+      <div class="card">
+        <p>
+          Escala é a razão entre a medida no desenho (<code>d</code>) e a medida
+          real (<code>D</code>). As duas precisam estar na mesma unidade.
+        </p>
+        <div class="formula">E = d / D</div>
+        <p>
+          A escala costuma aparecer na forma <code>1 : N</code>. Isso significa
+          que 1 unidade no desenho corresponde a N unidades reais.
+        </p>
+        <div class="formula">d = E × D &nbsp;&nbsp;&nbsp;&nbsp; D = d / E</div>
+
+        <h3>Tipo 1 — descobrir a distância real</h3>
+        <p>Mapa <code>1:50 000</code>, distância no mapa <code>4 cm</code>.</p>
+        <p class="math">D = 4 × 50 000 = 200 000 cm = 2 km</p>
+
+        <h3>Tipo 2 — descobrir a distância no mapa</h3>
+        <p>Distância real <code>8 km</code> em um mapa <code>1:200 000</code>.</p>
+        <p class="math">d = (8 × 100 000 cm) / 200 000 = 4 cm</p>
+
+        <h3>Tipo 3 — descobrir a escala</h3>
+        <p>Uma rua tem 3 km na realidade e mede 15 cm na planta.</p>
+        <p class="math">E = 15 / (3 × 100 000) = 1/20 000 → <strong>1:20 000</strong></p>
+
+        <div class="hint">
+          <strong>Estratégia:</strong> sempre converta tudo para a mesma unidade
+          antes de aplicar a fórmula. A unidade mais segura é o centímetro.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONVERSORES INTERATIVOS ===================== -->
+    <section id="conversores">
+      <h2><span class="emoji">🧮</span> 10. Conversores interativos</h2>
+      <p>Brinque com os valores e veja o resultado na hora!</p>
+
+      <!-- Comprimento -->
+      <div class="converter">
+        <h3>Comprimento</h3>
+        <div class="conv-row">
+          <div class="conv-field">
+            <label>Valor</label>
+            <input type="number" id="lenVal" value="1.5" step="any">
           </div>
-        </section>
-
-        <section id="si">
-          <h2>2. Sistema Internacional de Unidades (SI)</h2>
-          <div class="card">
-            <p>
-              O SI define sete grandezas de base. As mais cobradas no ENEM são:
-            </p>
-            <table>
-              <thead>
-                <tr><th>Grandeza</th><th>Unidade SI</th><th>Símbolo</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Comprimento</td><td>metro</td><td>m</td></tr>
-                <tr><td>Massa</td><td>quilograma</td><td>kg</td></tr>
-                <tr><td>Tempo</td><td>segundo</td><td>s</td></tr>
-                <tr><td>Corrente elétrica</td><td>ampere</td><td>A</td></tr>
-                <tr><td>Temperatura</td><td>kelvin</td><td>K</td></tr>
-                <tr><td>Quantidade de matéria</td><td>mol</td><td>mol</td></tr>
-                <tr><td>Intensidade luminosa</td><td>candela</td><td>cd</td></tr>
-              </tbody>
-            </table>
-
-            <h3>Prefixos do SI</h3>
-            <p>Os prefixos multiplicam ou dividem a unidade por potências de 10.</p>
-            <table>
-              <thead>
-                <tr><th>Prefixo</th><th>Símbolo</th><th>Fator</th><th>Exemplo</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>quilo</td><td>k</td><td>10³</td><td>1 km = 1 000 m</td></tr>
-                <tr><td>hecto</td><td>h</td><td>10²</td><td>1 hm = 100 m</td></tr>
-                <tr><td>deca</td><td>da</td><td>10¹</td><td>1 dam = 10 m</td></tr>
-                <tr><td>—</td><td>—</td><td>10⁰</td><td>1 m</td></tr>
-                <tr><td>deci</td><td>d</td><td>10⁻¹</td><td>1 dm = 0,1 m</td></tr>
-                <tr><td>centi</td><td>c</td><td>10⁻²</td><td>1 cm = 0,01 m</td></tr>
-                <tr><td>mili</td><td>m</td><td>10⁻³</td><td>1 mm = 0,001 m</td></tr>
-                <tr><td>micro</td><td>µ</td><td>10⁻⁶</td><td>1 µm = 0,000001 m</td></tr>
-                <tr><td>nano</td><td>n</td><td>10⁻⁹</td><td>1 nm = 10⁻⁹ m</td></tr>
-              </tbody>
-            </table>
-            <div class="hint">
-              <strong>Regra de ouro:</strong> cada prefixo “vale” uma potência de 10.
-              Converter entre prefixos é apenas multiplicar por essas potências.
-            </div>
+          <div class="conv-field">
+            <label>De</label>
+            <select id="lenFrom">
+              <option value="km">km</option>
+              <option value="m" selected>m</option>
+              <option value="cm">cm</option>
+              <option value="mm">mm</option>
+            </select>
           </div>
-        </section>
-
-        <section id="notacao">
-          <h2>3. Notação científica</h2>
-          <div class="card">
-            <p>
-              Notação científica escreve números como
-              <code>a × 10ⁿ</code>, com <code>1 ≤ a &lt; 10</code> e <code>n</code> inteiro.
-              É essencial para trabalhar com medidas muito grandes (distâncias astronômicas)
-              ou muito pequenas (átomos, microrganismos).
-            </p>
-            <div class="formula">a × 10ⁿ &nbsp;&nbsp; (1 ≤ a &lt; 10)</div>
-
-            <h4>Exemplos</h4>
-            <ul>
-              <li><code>3 500 = 3,5 × 10³</code></li>
-              <li><code>0,00042 = 4,2 × 10⁻⁴</code></li>
-              <li><code>150 000 000 km = 1,5 × 10⁸ km</code> (distância Terra–Sol)</li>
-              <li><code>0,000000001 m = 1 × 10⁻⁹ m</code> (1 nanômetro)</li>
-            </ul>
-
-            <h3>Por que isso importa nas conversões?</h3>
-            <p>
-              Ao converter unidades pequenas para grandes, os valores podem ficar
-              minúsculos. Em vez de escrever muitos zeros, usamos potências de 10.
-            </p>
-            <p>
-              Exemplo: <code>5 mm = 5 × 10⁻³ m = 0,005 m</code>.
-            </p>
+          <div class="conv-field">
+            <label>Para</label>
+            <select id="lenTo">
+              <option value="km">km</option>
+              <option value="m">m</option>
+              <option value="cm" selected>cm</option>
+              <option value="mm">mm</option>
+            </select>
           </div>
-        </section>
+        </div>
+        <div class="conv-result" id="lenResult">1,5 m = 150 cm</div>
+      </div>
 
-        <section id="comprimento">
-          <h2>4. Conversão de comprimento</h2>
-          <div class="card">
-            <p>
-              A unidade básica é o metro. A cada “salto” na escada, multiplica-se ou
-              divide-se por 10.
-            </p>
-
-            <table>
-              <thead>
-                <tr><th>km</th><th>hm</th><th>dam</th><th>m</th><th>dm</th><th>cm</th><th>mm</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1 000 m</td><td>100 m</td><td>10 m</td><td>1 m</td>
-                  <td>0,1 m</td><td>0,01 m</td><td>0,001 m</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <h3>Método 1 — pela escada</h3>
-            <p>
-              Para ir de uma unidade para outra, conte os saltos e multiplique ou
-              divida por 10 a cada salto.
-            </p>
-            <p><strong>Exemplo:</strong> 3,7 km em cm.</p>
-            <p>De km até cm são 5 saltos “para baixo” → multiplicar por 10⁵.</p>
-            <p class="math">3,7 × 10⁵ = 370 000 cm</p>
-
-            <h3>Método 2 — pela regra de três</h3>
-            <p>
-              Quando a escada confunde, monte uma regra de três com a relação conhecida.
-            </p>
-            <p><strong>Exemplo:</strong> quantos metros há em 4,2 km?</p>
-            <p>Sabemos que <code>1 km = 1 000 m</code>. Então:</p>
-            <div class="formula">
-              1 km — 1 000 m<br>
-              4,2 km — x m<br>
-              x = 4,2 × 1 000 = 4 200 m
-            </div>
+      <!-- Área / Volume -->
+      <div class="converter">
+        <h3>Área e Volume</h3>
+        <div class="conv-row">
+          <div class="conv-field">
+            <label>Valor</label>
+            <input type="number" id="avVal" value="2" step="any">
           </div>
-        </section>
-
-        <section id="area-volume">
-          <h2>5. Área e volume</h2>
-          <div class="card">
-            <h3>Área — por que eleva ao quadrado?</h3>
-            <p>
-              Área é o produto de duas medidas de comprimento. Se cada lado for
-              convertido, as duas conversões se multiplicam. É por isso que o fator
-              de conversão é elevado ao quadrado.
-            </p>
-            <p>Se <code>1 m = 100 cm</code>, então:</p>
-            <div class="formula">1 m² = (100 cm)² = 10 000 cm²</div>
-
-            <table>
-              <thead>
-                <tr><th>Relação</th><th>Equivalência</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>1 m²</td><td>10 000 cm²</td></tr>
-                <tr><td>1 km²</td><td>1 000 000 m²</td></tr>
-                <tr><td>1 hectare (ha)</td><td>10 000 m²</td></tr>
-                <tr><td>1 alqueire</td><td>varia por região (cuidado!)</td></tr>
-              </tbody>
-            </table>
-
-            <div class="warn">
-              <strong>Erro clássico:</strong> dizer que <code>1 m² = 100 cm²</code>.
-              O correto é <code>1 m² = 10 000 cm²</code>, porque o fator 100 aparece
-              duas vezes (largura e comprimento).
-            </div>
-
-            <h3>Volume — por que eleva ao cubo?</h3>
-            <p>
-              Volume é o produto de três medidas. Se <code>1 m = 100 cm</code>, então
-              o cubo do fator aparece:
-            </p>
-            <div class="formula">1 m³ = (100 cm)³ = 1 000 000 cm³</div>
-
-            <h3>Relação entre volume e capacidade</h3>
-            <table>
-              <thead>
-                <tr><th>Volume</th><th>Capacidade</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>1 m³</td><td>1 000 L</td></tr>
-                <tr><td>1 dm³</td><td>1 L</td></tr>
-                <tr><td>1 cm³</td><td>1 mL</td></tr>
-                <tr><td>1 L</td><td>1 000 mL</td></tr>
-              </tbody>
-            </table>
-
-            <div class="note">
-              <strong>Truque:</strong> como <code>1 dm³ = 1 L</code> e
-              <code>1 cm³ = 1 mL</code>, converter entre volume e capacidade é
-              andar 3 casas com potências de 1 000.
-            </div>
-
-            <h3>Exemplo resolvido</h3>
-            <p>Um tanque tem 2,5 m³. Quantos litros cabem?</p>
-            <p class="math">2,5 × 1 000 = 2 500 L</p>
+          <div class="conv-field">
+            <label>Tipo</label>
+            <select id="avType">
+              <option value="area">Área (m² ↔ cm²)</option>
+              <option value="vol">Volume (m³ ↔ L)</option>
+            </select>
           </div>
-        </section>
-
-        <section id="massa">
-          <h2>6. Massa</h2>
-          <div class="card">
-            <p>
-              A unidade SI é o quilograma (kg). A escada é decimal, como o comprimento,
-              mas a unidade base do dia a dia é o grama (g).
-            </p>
-            <ul>
-              <li><code>1 t = 1 000 kg</code></li>
-              <li><code>1 kg = 1 000 g</code></li>
-              <li><code>1 g = 1 000 mg</code></li>
-            </ul>
-
-            <h3>Massa × peso</h3>
-            <p>
-              <strong>Massa</strong> é a quantidade de matéria (não muda com o local).
-              <strong>Peso</strong> é a força gravitacional (muda com a gravidade).
-              No ENEM, a distinção aparece em questões de física, mas a unidade kg é
-              sempre de massa.
-            </p>
-
-            <h3>Exemplo resolvido</h3>
-            <p>Uma carga de 3,2 t em gramas:</p>
-            <p class="math">3,2 × 1 000 × 1 000 = 3 200 000 g</p>
-            <p>Ou em notação científica: <code>3,2 × 10⁶ g</code>.</p>
+          <div class="conv-field">
+            <label>Direção</label>
+            <select id="avDir">
+              <option value="toSmall">para menor</option>
+              <option value="toBig">para maior</option>
+            </select>
           </div>
-        </section>
+        </div>
+        <div class="conv-result" id="avResult">2 m² = 20 000 cm²</div>
+      </div>
 
-        <section id="tempo">
-          <h2>7. Tempo</h2>
-          <div class="card">
-            <p>
-              O tempo <strong>não é decimal</strong>: usa base 60 para minutos e
-              segundos. Isso muda tudo.
-            </p>
-            <ul>
-              <li><code>1 min = 60 s</code></li>
-              <li><code>1 h = 60 min = 3 600 s</code></li>
-              <li><code>1 dia = 24 h = 1 440 min</code></li>
-            </ul>
-
-            <div class="warn">
-              <strong>Cuidado:</strong> <code>0,5 h</code> não são 50 min, são 30 min.
-              Para converter horas “quebradas” em minutos, multiplique a parte
-              decimal por 60.
-            </div>
-
-            <h3>Exemplo resolvido</h3>
-            <p>Converter 2,75 h em horas e minutos.</p>
-            <ul>
-              <li>Parte inteira: 2 h.</li>
-              <li>Parte decimal: 0,75 h × 60 = 45 min.</li>
-              <li>Resultado: <strong>2 h 45 min</strong>.</li>
-            </ul>
+      <!-- Velocidade -->
+      <div class="converter">
+        <h3>Velocidade (km/h ↔ m/s)</h3>
+        <div class="conv-row">
+          <div class="conv-field">
+            <label>Valor</label>
+            <input type="number" id="spdVal" value="108" step="any">
           </div>
-        </section>
-
-        <section id="velocidade">
-          <h2>8. Velocidade</h2>
-          <div class="card">
-            <p>
-              Velocidade mede a rapidez com que o espaço varia no tempo:
-            </p>
-            <div class="formula">v = Δs / Δt</div>
-            <p>
-              A unidade SI é <code>m/s</code>. No dia a dia usamos <code>km/h</code>.
-            </p>
-
-            <h3>Conversão km/h ↔ m/s</h3>
-            <p>Como <code>1 km = 1 000 m</code> e <code>1 h = 3 600 s</code>:</p>
-            <div class="formula">1 m/s = 3,6 km/h</div>
-            <ul>
-              <li>De <strong>km/h</strong> para <strong>m/s</strong>: dividir por 3,6.</li>
-              <li>De <strong>m/s</strong> para <strong>km/h</strong>: multiplicar por 3,6.</li>
-            </ul>
-
-            <h3>Exemplo resolvido</h3>
-            <p>Um carro a 108 km/h está a quantos m/s?</p>
-            <p class="math">108 ÷ 3,6 = 30 m/s</p>
-
-            <h3>Exercício inverso</h3>
-            <p>Um corredor a 5 m/s está a quantos km/h?</p>
-            <p class="math">5 × 3,6 = 18 km/h</p>
+          <div class="conv-field">
+            <label>De</label>
+            <select id="spdFrom">
+              <option value="kmh" selected>km/h</option>
+              <option value="ms">m/s</option>
+            </select>
           </div>
-        </section>
+        </div>
+        <div class="conv-result" id="spdResult">108 km/h = 30 m/s</div>
+      </div>
 
-        <section id="escala">
-          <h2>9. Escala em mapas e plantas</h2>
-          <div class="card">
-            <p>
-              Escala é a razão entre a medida no desenho (<code>d</code>) e a medida
-              real (<code>D</code>). As duas precisam estar na mesma unidade.
-            </p>
-            <div class="formula">E = d / D</div>
-            <p>
-              A escala costuma aparecer na forma <code>1 : N</code>. Isso significa
-              que 1 unidade no desenho corresponde a N unidades reais.
-            </p>
-            <p>Assim, também valem:</p>
-            <div class="formula">d = E × D &nbsp;&nbsp;&nbsp;&nbsp; D = d / E</div>
-
-            <h3>Tipo 1 — descobrir a distância real</h3>
-            <p>
-              Mapa <code>1:50 000</code>, distância no mapa <code>4 cm</code>.
-            </p>
-            <p class="math">D = 4 × 50 000 = 200 000 cm = 2 000 m = 2 km</p>
-
-            <h3>Tipo 2 — descobrir a distância no mapa</h3>
-            <p>
-              Distância real <code>8 km</code> em um mapa <code>1:200 000</code>.
-            </p>
-            <p class="math">d = D / 200 000 = (8 × 100 000 cm) / 200 000 = 4 cm</p>
-
-            <h3>Tipo 3 — descobrir a escala</h3>
-            <p>
-              Uma rua tem 3 km na realidade e mede 15 cm na planta.
-            </p>
-            <p class="math">E = 15 cm / (3 × 100 000 cm) = 15/300 000 = 1/20 000</p>
-            <p>Escala: <strong>1:20 000</strong>.</p>
-
-            <h3>Escala de ampliação e redução</h3>
-            <ul>
-              <li><strong>Redução:</strong> escala <code>1:N</code> com N &gt; 1 (mapas, plantas, maquetes).</li>
-              <li><strong>Ampliação:</strong> escala <code>N:1</code> (microscópios, ampliações fotográficas).</li>
-            </ul>
-
-            <div class="hint">
-              <strong>Estratégia:</strong> sempre converta tudo para a mesma unidade
-              antes de aplicar a fórmula. A unidade mais segura é o centímetro,
-              porque as escalas costumam vir em cm.
-            </div>
+      <!-- Escala -->
+      <div class="converter">
+        <h3>Calculadora de escala</h3>
+        <div class="conv-row">
+          <div class="conv-field">
+            <label>Distância no mapa (cm)</label>
+            <input type="number" id="escMap" value="4" step="any">
           </div>
-        </section>
-
-        <section id="erros">
-          <h2>10. Erros mais comuns</h2>
-          <div class="card">
-            <ol>
-              <li><strong>Não converter a unidade na escala.</strong> Misturar cm com km na mesma conta dá resultado absurdo.</li>
-              <li><strong>Confundir m² com cm².</strong> <code>1 m² ≠ 100 cm²</code>. É <code>10 000 cm²</code>.</li>
-              <li><strong>Tratar tempo como decimal.</strong> <code>0,5 h = 30 min</code>, não 50 min.</li>
-              <li><strong>Usar 3,6 na direção errada.</strong> km/h → m/s dividindo por 3,6.</li>
-              <li><strong>Aplicar fator linear em área ou volume.</strong> Em m² use fator², em m³ use fator³.</li>
-              <li><strong>Esquecer a notação científica.</strong> Escrever <code>0,0000005 m</code> em vez de <code>5 × 10⁻⁷ m</code>.</li>
-            </ol>
+          <div class="conv-field">
+            <label>Escala (1:N)</label>
+            <input type="number" id="escN" value="50000" step="1">
           </div>
-        </section>
+        </div>
+        <div class="conv-result" id="escResult">4 cm na escala 1:50 000 = 2 km</div>
+      </div>
+    </section>
 
-        <section id="exercicios">
-          <h2>11. Exercícios resolvidos</h2>
+    <section id="erros">
+      <h2><span class="emoji">⚠️</span> 11. Erros mais comuns</h2>
+      <div class="card">
+        <ol>
+          <li><strong>Não converter a unidade na escala.</strong> Misturar cm com km dá resultado absurdo.</li>
+          <li><strong>Confundir m² com cm².</strong> <code>1 m² ≠ 100 cm²</code> → é <code>10 000 cm²</code>.</li>
+          <li><strong>Tratar tempo como decimal.</strong> <code>0,5 h = 30 min</code>, não 50 min.</li>
+          <li><strong>Usar 3,6 na direção errada.</strong> km/h → m/s = dividir por 3,6.</li>
+          <li><strong>Aplicar fator linear em área ou volume.</strong> Em m² use fator², em m³ use fator³.</li>
+          <li><strong>Esquecer a notação científica.</strong> Prefira <code>5 × 10⁻⁷ m</code> a muitos zeros.</li>
+        </ol>
+      </div>
+    </section>
 
-          <details>
-            <summary>1) Converta 0,45 km para centímetros.</summary>
-            <p>De km para cm são 5 casas decimais (km → m → dm → cm) — fator 10⁵.</p>
-            <p class="math">0,45 × 10⁵ = 45 000 cm</p>
-          </details>
+    <section id="exercicios">
+      <h2><span class="emoji">✏️</span> 12. Exercícios resolvidos</h2>
 
-          <details>
-            <summary>2) Um terreno tem 250 m². Quantos hectares?</summary>
-            <p><code>1 ha = 10 000 m²</code>.</p>
-            <p class="math">250 / 10 000 = 0,025 ha</p>
-          </details>
+      <details>
+        <summary>1) Converta 0,45 km para centímetros.</summary>
+        <p>De km para cm são 5 casas → fator 10⁵.</p>
+        <p class="math">0,45 × 10⁵ = 45 000 cm</p>
+      </details>
 
-          <details>
-            <summary>3) Uma caixa-d’água comporta 3,2 m³. Quantos litros?</summary>
-            <p><code>1 m³ = 1 000 L</code>.</p>
-            <p class="math">3,2 × 1 000 = 3 200 L</p>
-          </details>
+      <details>
+        <summary>2) Um terreno tem 250 m². Quantos hectares?</summary>
+        <p><code>1 ha = 10 000 m²</code> → 250 / 10 000 = 0,025 ha</p>
+      </details>
 
-          <details>
-            <summary>4) Um caminhão transporta 4,5 t. Quantos quilogramas?</summary>
-            <p><code>1 t = 1 000 kg</code>.</p>
-            <p class="math">4,5 × 1 000 = 4 500 kg</p>
-          </details>
+      <details>
+        <summary>3) Uma caixa-d’água comporta 3,2 m³. Quantos litros?</summary>
+        <p><code>1 m³ = 1 000 L</code> → 3,2 × 1 000 = 3 200 L</p>
+      </details>
 
-          <details>
-            <summary>5) 2 h 30 min equivalem a quantos segundos?</summary>
-            <p>2 h = 7 200 s; 30 min = 1 800 s.</p>
-            <p class="math">7 200 + 1 800 = 9 000 s</p>
-          </details>
+      <details>
+        <summary>4) Um caminhão transporta 4,5 t. Quantos quilogramas?</summary>
+        <p>4,5 × 1 000 = 4 500 kg</p>
+      </details>
 
-          <details>
-            <summary>6) 144 km/h em m/s.</summary>
-            <p class="math">144 ÷ 3,6 = 40 m/s</p>
-          </details>
+      <details>
+        <summary>5) 2 h 30 min equivalem a quantos segundos?</summary>
+        <p>2 h = 7 200 s + 30 min = 1 800 s → 9 000 s</p>
+      </details>
 
-          <details>
-            <summary>7) Em uma planta 1:150, uma sala mede 6 cm por 4 cm. Qual a área real?</summary>
-            <p>Lados reais: <code>6 × 150 = 900 cm</code> e <code>4 × 150 = 600 cm</code>.</p>
-            <p>Área real: <code>900 × 600 = 540 000 cm² = 54 m²</code>.</p>
-          </details>
+      <details>
+        <summary>6) 144 km/h em m/s.</summary>
+        <p class="math">144 ÷ 3,6 = 40 m/s</p>
+      </details>
 
-          <details>
-            <summary>8) Um mapa mostra 12 cm entre duas cidades e a escala é 1:250 000. Qual a distância real?</summary>
-            <p class="math">12 × 250 000 = 3 000 000 cm = 30 km</p>
-          </details>
-        </section>
+      <details>
+        <summary>7) Em uma planta 1:150, uma sala mede 6 cm por 4 cm. Qual a área real?</summary>
+        <p>Lados: 900 cm e 600 cm → área = 54 m²</p>
+      </details>
 
-        <section id="quiz">
-          <h2>12. Quiz</h2>
-          <p>
-            Marque uma alternativa por questão e clique em <strong>Corrigir quiz</strong>.
-            O gabarito com explicação aparece logo abaixo de cada questão, e você
-            pode refazer quantas vezes quiser.
-          </p>
+      <details>
+        <summary>8) Um mapa mostra 12 cm entre duas cidades (escala 1:250 000). Qual a distância real?</summary>
+        <p class="math">12 × 250 000 = 3 000 000 cm = 30 km</p>
+      </details>
+    </section>
 
-          <form id="quizForm" novalidate>
-            <fieldset class="question" data-q="q1">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 1</legend>
-              <p>1) <code>1 m²</code> equivale a quantos centímetros quadrados?</p>
-              <label><input type="radio" name="q1" value="a"> 100 cm²</label>
-              <label><input type="radio" name="q1" value="b"> 1 000 cm²</label>
-              <label><input type="radio" name="q1" value="c"> 10 000 cm²</label>
-              <label><input type="radio" name="q1" value="d"> 100 000 cm²</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+    <section id="quiz">
+      <h2><span class="emoji">🏆</span> 13. Quiz interativo</h2>
+      <p>
+        Marque uma alternativa por questão e clique em <strong>Corrigir quiz</strong>.
+        Feedback imediato + explicação. Acerte tudo e ganhe uma surpresa! 🎉
+      </p>
 
-            <fieldset class="question" data-q="q2">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 2</legend>
-              <p>2) <code>1 m³</code> equivale a quantos litros?</p>
-              <label><input type="radio" name="q2" value="a"> 10 L</label>
-              <label><input type="radio" name="q2" value="b"> 100 L</label>
-              <label><input type="radio" name="q2" value="c"> 1 000 L</label>
-              <label><input type="radio" name="q2" value="d"> 10 000 L</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+      <form id="quizForm" novalidate>
+        <fieldset class="question" data-q="q1">
+          <p>1) <code>1 m²</code> equivale a quantos centímetros quadrados?</p>
+          <label><input type="radio" name="q1" value="a"> 100 cm²</label>
+          <label><input type="radio" name="q1" value="b"> 1 000 cm²</label>
+          <label><input type="radio" name="q1" value="c"> 10 000 cm²</label>
+          <label><input type="radio" name="q1" value="d"> 100 000 cm²</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <fieldset class="question" data-q="q3">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 3</legend>
-              <p>3) <code>90 km/h</code> correspondem a quantos m/s?</p>
-              <label><input type="radio" name="q3" value="a"> 25 m/s</label>
-              <label><input type="radio" name="q3" value="b"> 32,4 m/s</label>
-              <label><input type="radio" name="q3" value="c"> 324 m/s</label>
-              <label><input type="radio" name="q3" value="d"> 9 m/s</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+        <fieldset class="question" data-q="q2">
+          <p>2) <code>1 m³</code> equivale a quantos litros?</p>
+          <label><input type="radio" name="q2" value="a"> 10 L</label>
+          <label><input type="radio" name="q2" value="b"> 100 L</label>
+          <label><input type="radio" name="q2" value="c"> 1 000 L</label>
+          <label><input type="radio" name="q2" value="d"> 10 000 L</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <fieldset class="question" data-q="q4">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 4</legend>
-              <p>4) Em uma escala <code>1:25 000</code>, 8 cm no mapa correspondem a quantos km?</p>
-              <label><input type="radio" name="q4" value="a"> 0,2 km</label>
-              <label><input type="radio" name="q4" value="b"> 2 km</label>
-              <label><input type="radio" name="q4" value="c"> 20 km</label>
-              <label><input type="radio" name="q4" value="d"> 200 km</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+        <fieldset class="question" data-q="q3">
+          <p>3) <code>90 km/h</code> correspondem a quantos m/s?</p>
+          <label><input type="radio" name="q3" value="a"> 25 m/s</label>
+          <label><input type="radio" name="q3" value="b"> 32,4 m/s</label>
+          <label><input type="radio" name="q3" value="c"> 324 m/s</label>
+          <label><input type="radio" name="q3" value="d"> 9 m/s</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <fieldset class="question" data-q="q5">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 5</legend>
-              <p>5) <code>2,5 kg</code> equivalem a quantos gramas?</p>
-              <label><input type="radio" name="q5" value="a"> 25 g</label>
-              <label><input type="radio" name="q5" value="b"> 250 g</label>
-              <label><input type="radio" name="q5" value="c"> 2 500 g</label>
-              <label><input type="radio" name="q5" value="d"> 25 000 g</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+        <fieldset class="question" data-q="q4">
+          <p>4) Em uma escala <code>1:25 000</code>, 8 cm no mapa correspondem a quantos km?</p>
+          <label><input type="radio" name="q4" value="a"> 0,2 km</label>
+          <label><input type="radio" name="q4" value="b"> 2 km</label>
+          <label><input type="radio" name="q4" value="c"> 20 km</label>
+          <label><input type="radio" name="q4" value="d"> 200 km</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <fieldset class="question" data-q="q6">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 6</legend>
-              <p>6) <code>3,5 h</code> equivalem a quantos minutos?</p>
-              <label><input type="radio" name="q6" value="a"> 180 min</label>
-              <label><input type="radio" name="q6" value="b"> 210 min</label>
-              <label><input type="radio" name="q6" value="c"> 350 min</label>
-              <label><input type="radio" name="q6" value="d"> 3 500 min</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+        <fieldset class="question" data-q="q5">
+          <p>5) <code>2,5 kg</code> equivalem a quantos gramas?</p>
+          <label><input type="radio" name="q5" value="a"> 25 g</label>
+          <label><input type="radio" name="q5" value="b"> 250 g</label>
+          <label><input type="radio" name="q5" value="c"> 2 500 g</label>
+          <label><input type="radio" name="q5" value="d"> 25 000 g</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <fieldset class="question" data-q="q7">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 7</legend>
-              <p>7) <code>500 mL</code> equivalem a quantos cm³?</p>
-              <label><input type="radio" name="q7" value="a"> 0,5 cm³</label>
-              <label><input type="radio" name="q7" value="b"> 5 cm³</label>
-              <label><input type="radio" name="q7" value="c"> 50 cm³</label>
-              <label><input type="radio" name="q7" value="d"> 500 cm³</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+        <fieldset class="question" data-q="q6">
+          <p>6) <code>3,5 h</code> equivalem a quantos minutos?</p>
+          <label><input type="radio" name="q6" value="a"> 180 min</label>
+          <label><input type="radio" name="q6" value="b"> 210 min</label>
+          <label><input type="radio" name="q6" value="c"> 350 min</label>
+          <label><input type="radio" name="q6" value="d"> 3 500 min</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <fieldset class="question" data-q="q8">
-              <legend class="sr-only" style="position:absolute;left:-9999px;">Questão 8</legend>
-              <p>8) Uma distância real de 15 km aparece como 5 cm em um mapa. Qual é a escala?</p>
-              <label><input type="radio" name="q8" value="a"> 1:3 000</label>
-              <label><input type="radio" name="q8" value="b"> 1:30 000</label>
-              <label><input type="radio" name="q8" value="c"> 1:300 000</label>
-              <label><input type="radio" name="q8" value="d"> 1:3 000 000</label>
-              <div class="q-feedback" hidden></div>
-            </fieldset>
+        <fieldset class="question" data-q="q7">
+          <p>7) <code>500 mL</code> equivalem a quantos cm³?</p>
+          <label><input type="radio" name="q7" value="a"> 0,5 cm³</label>
+          <label><input type="radio" name="q7" value="b"> 5 cm³</label>
+          <label><input type="radio" name="q7" value="c"> 50 cm³</label>
+          <label><input type="radio" name="q7" value="d"> 500 cm³</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <div class="quiz-actions">
-              <button type="button" class="btn" id="checkQuiz">Corrigir quiz</button>
-              <button type="button" class="btn secondary" id="resetQuiz">Refazer quiz</button>
-            </div>
+        <fieldset class="question" data-q="q8">
+          <p>8) Uma distância real de 15 km aparece como 5 cm em um mapa. Qual é a escala?</p>
+          <label><input type="radio" name="q8" value="a"> 1:3 000</label>
+          <label><input type="radio" name="q8" value="b"> 1:30 000</label>
+          <label><input type="radio" name="q8" value="c"> 1:300 000</label>
+          <label><input type="radio" name="q8" value="d"> 1:3 000 000</label>
+          <div class="q-feedback" hidden></div>
+        </fieldset>
 
-            <div id="quizSummary" class="quiz-summary" hidden aria-live="polite"></div>
-          </form>
-        </section>
+        <div class="quiz-actions">
+          <button type="button" class="btn" id="checkQuiz">Corrigir quiz</button>
+          <button type="button" class="btn secondary" id="resetQuiz">Refazer quiz</button>
+        </div>
 
-      </div><!-- /.content -->
-    </div><!-- /.layout -->
+        <div id="quizSummary" class="quiz-summary" hidden aria-live="polite"></div>
+      </form>
+    </section>
 
     <footer>
-      Portal ENEM · Conteúdo de revisão aprofundada de unidades, conversão e escala.
+      Portal ENEM · Versão divertida e interativa de unidades, conversão e escala.
     </footer>
 
   </main>
 
-  <!-- ===================== JS do quiz (inalterado) ===================== -->
   <script>
     (function () {
       "use strict";
 
-      const QUIZ_DATA = {
-        q1: {
-          correct: "c",
-          explanation: "1 m = 100 cm, então 1 m² = 100² = 10 000 cm². O fator é elevado ao quadrado porque a área envolve duas dimensões."
-        },
-        q2: {
-          correct: "c",
-          explanation: "1 m³ = 1 000 dm³ e 1 dm³ = 1 L, então 1 m³ = 1 000 L."
-        },
-        q3: {
-          correct: "a",
-          explanation: "Para passar de km/h para m/s, divide-se por 3,6: 90 ÷ 3,6 = 25 m/s."
-        },
-        q4: {
-          correct: "b",
-          explanation: "8 × 25 000 = 200 000 cm = 2 000 m = 2 km. Sempre converta o resultado para a unidade pedida."
-        },
-        q5: {
-          correct: "c",
-          explanation: "1 kg = 1 000 g, então 2,5 × 1 000 = 2 500 g."
-        },
-        q6: {
-          correct: "b",
-          explanation: "1 h = 60 min, então 3,5 × 60 = 210 min. Lembre: 0,5 h são 30 min, não 50 min."
-        },
-        q7: {
-          correct: "d",
-          explanation: "1 mL = 1 cm³, então 500 mL = 500 cm³."
-        },
-        q8: {
-          correct: "c",
-          explanation: "E = d / D = 5 cm / (15 × 100 000 cm) = 5 / 1 500 000 = 1 / 300 000. Escala 1:300 000."
+      /* ========== Progress bar ========== */
+      const progress = document.getElementById("progress");
+      window.addEventListener("scroll", function () {
+        const h = document.documentElement;
+        const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+        progress.style.width = scrolled + "%";
+      }, { passive: true });
+
+      /* ========== Sticky nav active state ========== */
+      const navLinks = document.querySelectorAll(".sec-nav a");
+      const sections = Array.from(navLinks).map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+
+      function setActive(id) {
+        navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + id));
+      }
+
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(entries => {
+          const visible = entries.filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (visible.length) setActive(visible[0].target.id);
+        }, { rootMargin: "-15% 0px -70% 0px", threshold: 0 });
+        sections.forEach(s => io.observe(s));
+      }
+
+      /* ========== Conversores ========== */
+      const lenFactors = { km: 1000, m: 1, cm: 0.01, mm: 0.001 };
+
+      function updateLen() {
+        const val = parseFloat(document.getElementById("lenVal").value) || 0;
+        const from = document.getElementById("lenFrom").value;
+        const to = document.getElementById("lenTo").value;
+        const meters = val * lenFactors[from];
+        const result = meters / lenFactors[to];
+        const fmt = n => n.toLocaleString("pt-BR", { maximumFractionDigits: 6 });
+        document.getElementById("lenResult").textContent =
+          `${fmt(val)} ${from} = ${fmt(result)} ${to}`;
+      }
+
+      function updateAV() {
+        const val = parseFloat(document.getElementById("avVal").value) || 0;
+        const type = document.getElementById("avType").value;
+        const dir = document.getElementById("avDir").value;
+        let text = "";
+        if (type === "area") {
+          if (dir === "toSmall") text = `${val} m² = ${(val * 10000).toLocaleString("pt-BR")} cm²`;
+          else text = `${val} cm² = ${(val / 10000).toLocaleString("pt-BR")} m²`;
+        } else {
+          if (dir === "toSmall") text = `${val} m³ = ${(val * 1000).toLocaleString("pt-BR")} L`;
+          else text = `${val} L = ${(val / 1000).toLocaleString("pt-BR")} m³`;
         }
+        document.getElementById("avResult").textContent = text;
+      }
+
+      function updateSpd() {
+        const val = parseFloat(document.getElementById("spdVal").value) || 0;
+        const from = document.getElementById("spdFrom").value;
+        let text = "";
+        if (from === "kmh") {
+          text = `${val} km/h = ${(val / 3.6).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} m/s`;
+        } else {
+          text = `${val} m/s = ${(val * 3.6).toLocaleString("pt-BR", { maximumFractionDigits: 2 })} km/h`;
+        }
+        document.getElementById("spdResult").textContent = text;
+      }
+
+      function updateEsc() {
+        const map = parseFloat(document.getElementById("escMap").value) || 0;
+        const n = parseFloat(document.getElementById("escN").value) || 1;
+        const cm = map * n;
+        const km = cm / 100000;
+        document.getElementById("escResult").textContent =
+          `${map} cm na escala 1:${n.toLocaleString("pt-BR")} = ${km.toLocaleString("pt-BR", { maximumFractionDigits: 3 })} km`;
+      }
+
+      ["lenVal","lenFrom","lenTo"].forEach(id => {
+        document.getElementById(id).addEventListener("input", updateLen);
+        document.getElementById(id).addEventListener("change", updateLen);
+      });
+      ["avVal","avType","avDir"].forEach(id => {
+        document.getElementById(id).addEventListener("input", updateAV);
+        document.getElementById(id).addEventListener("change", updateAV);
+      });
+      ["spdVal","spdFrom"].forEach(id => {
+        document.getElementById(id).addEventListener("input", updateSpd);
+        document.getElementById(id).addEventListener("change", updateSpd);
+      });
+      ["escMap","escN"].forEach(id => {
+        document.getElementById(id).addEventListener("input", updateEsc);
+        document.getElementById(id).addEventListener("change", updateEsc);
+      });
+
+      updateLen(); updateAV(); updateSpd(); updateEsc();
+
+      /* ========== Quiz ========== */
+      const QUIZ_DATA = {
+        q1: { correct: "c", explanation: "1 m = 100 cm, então 1 m² = 100² = 10 000 cm². O fator é elevado ao quadrado." },
+        q2: { correct: "c", explanation: "1 m³ = 1 000 dm³ e 1 dm³ = 1 L, então 1 m³ = 1 000 L." },
+        q3: { correct: "a", explanation: "km/h → m/s: divide por 3,6. 90 ÷ 3,6 = 25 m/s." },
+        q4: { correct: "b", explanation: "8 × 25 000 = 200 000 cm = 2 000 m = 2 km." },
+        q5: { correct: "c", explanation: "1 kg = 1 000 g → 2,5 × 1 000 = 2 500 g." },
+        q6: { correct: "b", explanation: "1 h = 60 min → 3,5 × 60 = 210 min. 0,5 h = 30 min." },
+        q7: { correct: "d", explanation: "1 mL = 1 cm³ → 500 mL = 500 cm³." },
+        q8: { correct: "c", explanation: "E = 5 cm / (15 × 100 000 cm) = 1/300 000 → escala 1:300 000." }
       };
 
       const form = document.getElementById("quizForm");
@@ -985,30 +1062,52 @@
       const checkBtn = document.getElementById("checkQuiz");
       const resetBtn = document.getElementById("resetQuiz");
 
-      function getQuestionEl(name) {
-        return form.querySelector('[data-q="' + name + '"]');
-      }
-
+      function getQuestionEl(name) { return form.querySelector('[data-q="' + name + '"]'); }
       function getFeedbackEl(name) {
         const q = getQuestionEl(name);
         return q ? q.querySelector(".q-feedback") : null;
       }
-
-      function getSelected(name) {
-        return form.querySelector('input[name="' + name + '"]:checked');
-      }
-
+      function getSelected(name) { return form.querySelector('input[name="' + name + '"]:checked'); }
       function getOptionText(name, value) {
         const input = form.querySelector('input[name="' + name + '"][value="' + value + '"]');
         return input ? input.closest("label").textContent.trim() : value;
       }
 
-      function corrigir() {
-        let score = 0;
-        let total = 0;
-        let unanswered = 0;
+      function confetti() {
+        const canvas = document.getElementById("confetti");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const pieces = Array.from({ length: 120 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 3,
+          c: `hsl(${Math.random() * 60 + 100},70%,55%)`,
+          vy: Math.random() * 3 + 2,
+          vx: (Math.random() - 0.5) * 2
+        }));
+        let frames = 0;
+        function draw() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          pieces.forEach(p => {
+            p.y += p.vy;
+            p.x += p.vx;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.c;
+            ctx.fill();
+          });
+          frames++;
+          if (frames < 120) requestAnimationFrame(draw);
+          else ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        draw();
+      }
 
-        Object.entries(QUIZ_DATA).forEach(function ([name, data]) {
+      function corrigir() {
+        let score = 0, total = 0, unanswered = 0;
+
+        Object.entries(QUIZ_DATA).forEach(([name, data]) => {
           total++;
           const q = getQuestionEl(name);
           const feedback = getFeedbackEl(name);
@@ -1016,50 +1115,49 @@
 
           q.classList.remove("ok", "bad");
           feedback.hidden = false;
-
           const correctText = getOptionText(name, data.correct);
 
           if (!selected) {
             unanswered++;
             q.classList.add("bad");
-            feedback.innerHTML =
-              "<strong>Não respondida.</strong> " +
-              "Resposta correta: <strong>" + correctText + "</strong>. " +
-              data.explanation;
+            feedback.innerHTML = "<strong>Não respondida.</strong> Resposta correta: <strong>" + correctText + "</strong>. " + data.explanation;
             return;
           }
 
           if (selected.value === data.correct) {
             score++;
             q.classList.add("ok");
-            feedback.innerHTML = "<strong>Correto!</strong> " + data.explanation;
+            feedback.innerHTML = "<strong>Correto! 🎉</strong> " + data.explanation;
           } else {
             q.classList.add("bad");
-            feedback.innerHTML =
-              "<strong>Incorreto.</strong> " +
-              "Resposta correta: <strong>" + correctText + "</strong>. " +
-              data.explanation;
+            feedback.innerHTML = "<strong>Incorreto.</strong> Resposta correta: <strong>" + correctText + "</strong>. " + data.explanation;
           }
         });
 
         let msg = "Você acertou <strong>" + score + "</strong> de <strong>" + total + "</strong> questões.";
-        if (unanswered > 0) {
-          msg += " (" + unanswered + " sem resposta.)";
-        }
+        if (unanswered > 0) msg += " (" + unanswered + " sem resposta.)";
 
         summary.hidden = false;
         summary.innerHTML = msg;
         summary.classList.remove("success", "partial", "low");
 
         const pct = score / total;
-        if (pct === 1) summary.classList.add("success");
-        else if (pct >= 0.6) summary.classList.add("partial");
-        else summary.classList.add("low");
+        if (pct === 1) {
+          summary.classList.add("success");
+          summary.innerHTML += "<br>Parabéns! Nota 10 🏆";
+          confetti();
+        } else if (pct >= 0.6) {
+          summary.classList.add("partial");
+          summary.innerHTML += "<br>Bom trabalho! Quase lá 💪";
+        } else {
+          summary.classList.add("low");
+          summary.innerHTML += "<br>Revise os pontos e tente de novo 📚";
+        }
       }
 
       function resetar() {
         form.reset();
-        Object.keys(QUIZ_DATA).forEach(function (name) {
+        Object.keys(QUIZ_DATA).forEach(name => {
           const q = getQuestionEl(name);
           const feedback = getFeedbackEl(name);
           q.classList.remove("ok", "bad");
@@ -1069,7 +1167,6 @@
         summary.hidden = true;
         summary.innerHTML = "";
         summary.classList.remove("success", "partial", "low");
-
         form.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
@@ -1077,92 +1174,5 @@
       resetBtn.addEventListener("click", resetar);
     })();
   </script>
-
-  <!-- ===================== JS da barra lateral ===================== -->
-  <script>
-    (function () {
-      "use strict";
-
-      const sidebar  = document.getElementById("sidebar");
-      const toggle   = document.getElementById("sidebarToggle");
-      const closeBtn = document.getElementById("sidebarClose");
-      const backdrop = document.getElementById("sidebarBackdrop");
-      const links    = Array.from(sidebar.querySelectorAll(".sidebar-nav a"));
-
-      /* ---------- Gaveta (mobile) ---------- */
-      function openSidebar() {
-        sidebar.classList.add("open");
-        backdrop.hidden = false;
-        toggle.setAttribute("aria-expanded", "true");
-        document.body.classList.add("no-scroll");
-        const first = sidebar.querySelector("a");
-        if (first) first.focus({ preventScroll: true });
-      }
-
-      function closeSidebar() {
-        sidebar.classList.remove("open");
-        backdrop.hidden = true;
-        toggle.setAttribute("aria-expanded", "false");
-        document.body.classList.remove("no-scroll");
-        toggle.focus({ preventScroll: true });
-      }
-
-      toggle.addEventListener("click", openSidebar);
-      closeBtn.addEventListener("click", closeSidebar);
-      backdrop.addEventListener("click", closeSidebar);
-
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && sidebar.classList.contains("open")) {
-          closeSidebar();
-        }
-      });
-
-      links.forEach(function (a) {
-        a.addEventListener("click", function () {
-          if (sidebar.classList.contains("open")) closeSidebar();
-        });
-      });
-
-      /* ---------- Scrollspy ---------- */
-      const sections = links
-        .map(function (a) { return document.querySelector(a.getAttribute("href")); })
-        .filter(Boolean);
-
-      function setActive(id) {
-        links.forEach(function (a) {
-          a.classList.toggle("active", a.getAttribute("href") === "#" + id);
-        });
-      }
-
-      if ("IntersectionObserver" in window) {
-        const io = new IntersectionObserver(function (entries) {
-          const visible = entries
-            .filter(function (e) { return e.isIntersecting; })
-            .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
-          if (visible.length) setActive(visible[0].target.id);
-        }, {
-          rootMargin: "-20% 0px -70% 0px",
-          threshold: 0
-        });
-
-        sections.forEach(function (s) { io.observe(s); });
-      } else {
-        /* Fallback para navegadores antigos */
-        window.addEventListener("scroll", function () {
-          let current = sections[0] && sections[0].id;
-          sections.forEach(function (s) {
-            if (s.getBoundingClientRect().top <= 120) current = s.id;
-          });
-          if (current) setActive(current);
-        }, { passive: true });
-      }
-
-      if (location.hash) {
-        const id = location.hash.slice(1);
-        if (document.getElementById(id)) setActive(id);
-      }
-    })();
-  </script>
-
 </body>
 </html>
